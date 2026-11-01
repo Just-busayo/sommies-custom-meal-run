@@ -11,8 +11,8 @@ import { ItemModal } from "@/components/ItemModal";
 type S = { q?: string | undefined; cat?: string | undefined };
 export const Route = createFileRoute("/menu")({
   validateSearch: (s: Record<string, unknown>): S => ({
-    q: typeof s.q === "string" && s.q ? s.q : undefined,
-    cat: typeof s.cat === "string" && s.cat ? s.cat : undefined,
+    q: typeof s['q'] === "string" && s['q'] ? s['q'] : undefined,
+    cat: typeof s['cat'] === "string" && s['cat'] ? s['cat'] : undefined,
   }),
   head: () => ({
     meta: [
