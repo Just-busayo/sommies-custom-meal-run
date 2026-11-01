@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Cart, theme and delivery address live in the client StoreProvider (src/lib/store.tsx, localStorage); menu/order data is read via the browser client under RLS — no server functions needed yet.
