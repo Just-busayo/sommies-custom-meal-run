@@ -8,7 +8,7 @@ import { menuQuery, type MenuItem } from "@/lib/menu";
 import { FoodCard } from "@/components/FoodCard";
 import { ItemModal } from "@/components/ItemModal";
 
-type S = { q?: string; cat?: string };
+type S = { q?: string | undefined; cat?: string | undefined };
 export const Route = createFileRoute("/menu")({
   validateSearch: (s: Record<string, unknown>): S => ({
     q: typeof s.q === "string" && s.q ? s.q : undefined,
