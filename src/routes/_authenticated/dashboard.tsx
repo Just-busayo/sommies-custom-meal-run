@@ -107,7 +107,7 @@ function Profile() {
     setBusy(true);
     const { error } = await supabase.from("profiles").upsert({ id: user.id, ...f });
     setBusy(false);
-    if (error) return toast.error("Could not save profile");
+    if (error) { toast.error("Could not save profile"); return; }
     if (f.delivery_address) setAddress(f.delivery_address);
     toast.success("Profile saved");
   }

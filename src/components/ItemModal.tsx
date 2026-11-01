@@ -21,7 +21,7 @@ export function ItemModal({ item, onClose }: { item: MenuItem | null; onClose: (
 function Body({ item, onClose }: { item: MenuItem; onClose: () => void }) {
   const { add, setCartOpen } = useStore();
   const isDrink = item.category_id === "11111111-0000-0000-0000-000000000003";
-  const [protein, setProtein] = useState(isDrink ? undefined : PROTEINS[0].name);
+  const [protein, setProtein] = useState<string | undefined>(isDrink ? undefined : "Chicken");
   const [sides, setSides] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
   const [qty, setQty] = useState(1);

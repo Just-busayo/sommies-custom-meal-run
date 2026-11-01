@@ -41,7 +41,7 @@ function Checkout() {
 
   async function payOnline() {
     if (!user) { toast("Please sign in to pay online"); navigate({ to: "/auth" }); return; }
-    if (!address.trim()) return toast.error("Add a delivery address");
+    if (!address.trim()) { toast.error("Add a delivery address"); return; }
     setBusy(true);
     await new Promise((r) => setTimeout(r, 1200)); // payment preview
     const ok = await save("Online");
@@ -50,7 +50,7 @@ function Checkout() {
   }
 
   async function viaWhatsApp() {
-    if (!address.trim()) return toast.error("Add a delivery address");
+    if (!address.trim()) { toast.error("Add a delivery address"); return; }
     const url = whatsappUrl(lines, address, name || undefined);
     window.open(url, "_blank");
     if (user && (await save("WhatsApp"))) { clear(); toast.success("Order sent! Track it in your dashboard."); }

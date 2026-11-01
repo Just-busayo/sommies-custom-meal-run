@@ -59,7 +59,7 @@ export const SIDES = [
 
 export type CartLine = {
   key: string; itemId: string; title: string; image: string; unitPrice: number;
-  qty: number; protein?: string; sides: string[]; notes?: string;
+  qty: number; protein?: string | undefined; sides: string[]; notes?: string | undefined;
 };
 
 export function totals(lines: CartLine[]) {

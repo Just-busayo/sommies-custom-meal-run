@@ -55,7 +55,7 @@ export function Header() {
           </Button>
           {user ? (
             <Link to="/dashboard" className="grid size-9 place-items-center rounded-full bg-secondary font-bold text-secondary-foreground" aria-label="My account">
-              {(user.email ?? "U")[0].toUpperCase()}
+              {(user.email ?? "U").charAt(0).toUpperCase()}
             </Link>
           ) : (
             <Button asChild size="sm" className="rounded-full"><Link to="/auth"><User className="size-4" />Login</Link></Button>
