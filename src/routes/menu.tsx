@@ -17,9 +17,11 @@ export const Route = createFileRoute("/menu")({
   head: () => ({
     meta: [
       { title: "Menu — Sommies Kitchen" },
-      { name: "description", content: "Browse rice dishes, grills & sides, drinks and specials from Sommies Kitchen." },
+      { name: "description", content: "Browse rice, soups and other orders with confirmed portion prices from Sommies Kitchen." },
       { property: "og:title", content: "Menu — Sommies Kitchen" },
-      { property: "og:description", content: "Rice dishes, grills, drinks and chef specials — order online or on WhatsApp." },
+      { property: "og:description", content: "Multi-portion meals and price-on-request dishes for FUTO and its environs." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MenuPage,
@@ -35,16 +37,18 @@ function MenuPage() {
   const items = useMemo(() => (data?.items ?? []).filter((i) => {
     if (cat && i.category_id !== cat) return false;
     if (q && !`${i.title} ${i.description}`.toLowerCase().includes(q.toLowerCase())) return false;
-    if (price === "lt3" && i.price >= 3000) return false;
-    if (price === "3to6" && (i.price < 3000 || i.price > 6000)) return false;
-    if (price === "gt6" && i.price <= 6000) return false;
+    if (price !== "all" && price !== "request" && i.price_on_request) return false;
+    if (price === "request" && !i.price_on_request) return false;
+    if (price === "lt20" && i.price >= 20000) return false;
+    if (price === "20to40" && (i.price < 20000 || i.price > 40000)) return false;
+    if (price === "gt40" && i.price <= 40000) return false;
     return true;
   }), [data, q, cat, price]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       <h1 className="text-4xl font-extrabold md:text-5xl">Our menu</h1>
-      <p className="mt-2 text-muted-foreground">Tap any dish to customise it.</p>
+      <p className="mt-2 text-muted-foreground">Rice, soups and other orders · FUTO and its environs</p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -54,9 +58,10 @@ function MenuPage() {
           <SelectTrigger className="h-11 rounded-full sm:w-48"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Any price</SelectItem>
-            <SelectItem value="lt3">Under ₦3,000</SelectItem>
-            <SelectItem value="3to6">₦3,000 – ₦6,000</SelectItem>
-            <SelectItem value="gt6">Over ₦6,000</SelectItem>
+            <SelectItem value="lt20">From under ₦20,000</SelectItem>
+            <SelectItem value="20to40">From ₦20,000 – ₦40,000</SelectItem>
+            <SelectItem value="gt40">From over ₦40,000</SelectItem>
+            <SelectItem value="request">Price on request</SelectItem>
           </SelectContent>
         </Select>
       </div>

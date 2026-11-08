@@ -17,6 +17,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "description", content: "Track your Sommies Kitchen orders and manage your profile." },
       { property: "og:title", content: "My Orders — Sommies Kitchen" },
       { property: "og:description", content: "Order history, live status and profile settings." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,
@@ -72,7 +74,7 @@ function Dashboard() {
                   </div>
                   <div className="text-xl font-bold text-primary">{naira(Number(o.total_amount))}</div>
                 </div>
-                <p className="mt-2 text-sm">{items.map((i) => `${i.qty}× ${i.title}`).join(", ")}</p>
+                <p className="mt-2 text-sm">{items.map((i) => `${i.qty}× ${i.title}${i.portion ? ` — ${i.portion}, ${i.protein ?? ""}` : ""}`).join("; ")}</p>
                 <div className="mt-5 grid grid-cols-4 gap-2">
                   {STEPS.map((s, i) => (
                     <div key={s.name} className="flex flex-col items-center gap-1 text-center">

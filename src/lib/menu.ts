@@ -4,6 +4,9 @@ import hero from "@/assets/hero.jpg";
 import grill from "@/assets/grill.jpg";
 import rice from "@/assets/rice.jpg";
 import drinks from "@/assets/drinks.jpg";
+import { WHATSAPP_NUMBER, type Portion } from "./kitchen";
+import type { Json } from "@/integrations/supabase/types";
+export { WHATSAPP_NUMBER } from "./kitchen";
 
 // Replace with the kitchen's real WhatsApp number (international format, digits only).
 export const WHATSAPP_NUMBER = "2347086883952";
@@ -25,41 +28,39 @@ export type MenuItem = {
   id: string; title: string; description: string | null; price: number;
   category_id: string | null; image_url: string | null; is_available: boolean;
   rating: number; prep_minutes: number;
+  portion_options: Portion[]; price_on_request: boolean;
 };
 export type Category = { id: string; name: string; icon: string | null; sort: number };
+
+export function parsePortions(value: Json): Portion[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap(option => {
+    if (!option || typeof option !== "object" || Array.isArray(option)) return [];
+    const { size, includes, price } = option;
+    if (typeof size !== "string" || typeof includes !== "string" || typeof price !== "number" || price <= 0) return [];
+    return [{ size, includes, price }];
+  });
+}
 
 export const menuQuery = queryOptions({
   queryKey: ["menu"],
   queryFn: async () => {
     const [c, m] = await Promise.all([
       supabase.from("categories").select("*").order("sort"),
-      supabase.from("menu_items").select("*").order("title"),
+      supabase.from("menu_items").select("*").eq("retired", false).order("title"),
     ]);
     if (c.error) throw c.error;
     if (m.error) throw m.error;
     return {
-      categories: c.data as Category[],
-      items: (m.data ?? []).map((i) => ({ ...i, price: Number(i.price), rating: Number(i.rating) })) as MenuItem[],
+      categories: c.data.filter(category => m.data?.some(item => item.category_id === category.id)) as Category[],
+      items: (m.data ?? []).map((i) => ({ ...i, price: Number(i.price), rating: Number(i.rating), portion_options: parsePortions(i.portion_options) })),
     };
   },
 });
 
-export const PROTEINS = [
-  { name: "Chicken", price: 0 },
-  { name: "Beef", price: 500 },
-  { name: "Turkey", price: 1500 },
-  { name: "Fish", price: 1200 },
-];
-export const SIDES = [
-  { name: "Extra Dodo", price: 800 },
-  { name: "Coleslaw", price: 500 },
-  { name: "Moi Moi", price: 1000 },
-  { name: "Boiled Egg", price: 300 },
-];
-
 export type CartLine = {
   key: string; itemId: string; title: string; image: string; unitPrice: number;
-  qty: number; protein?: string | undefined; sides: string[]; notes?: string | undefined;
+  qty: number; portion?: string; protein?: string | undefined; sides: string[]; notes?: string | undefined;
 };
 
 export function totals(lines: CartLine[]) {
@@ -70,13 +71,14 @@ export function totals(lines: CartLine[]) {
 }
 
 export function whatsappUrl(lines: CartLine[], address: string, name?: string) {
+  if (!WHATSAPP_NUMBER) return null;
   const t = totals(lines);
   const body = [
     "🍽️ *New Order — Sommies Kitchen*",
     name ? `Name: ${name}` : null,
     "",
     ...lines.map((l, i) => {
-      const extra = [l.protein && `Protein: ${l.protein}`, l.sides.length && `Sides: ${l.sides.join(", ")}`, l.notes && `Note: ${l.notes}`]
+      const extra = [l.portion && `Portion: ${l.portion}`, l.protein && `Protein: ${l.protein}`, l.sides.length && `Sides: ${l.sides.join(", ")}`, l.notes && `Note: ${l.notes}`]
         .filter(Boolean).join(" | ");
       return `${i + 1}. ${l.qty}x ${l.title} — ${naira(l.unitPrice * l.qty)}${extra ? `\n   ${extra}` : ""}`;
     }),

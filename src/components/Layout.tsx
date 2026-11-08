@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { MapPin, Moon, Search, ShoppingBag, Sun, User, Instagram, Facebook, Twitter, MessageCircle, ChefHat } from "lucide-react";
+import { MapPin, Moon, Search, ShoppingBag, Sun, User, Instagram, Facebook, Twitter, Phone, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useStore } from "@/lib/store";
-import { WHATSAPP_NUMBER } from "@/lib/menu";
+import { DELIVERY_ZONE, PHONE_CONTACTS } from "@/lib/kitchen";
 
 export function Logo() {
   return (
@@ -16,7 +16,7 @@ export function Logo() {
   );
 }
 
-const ZONES = ["Lekki Phase 1, Lagos", "Victoria Island, Lagos", "Ikoyi, Lagos", "Yaba, Lagos", "Ikeja GRA, Lagos"];
+const ZONES = [DELIVERY_ZONE];
 
 export function Header() {
   const { lines, setCartOpen, address, setAddress, dark, toggleDark, user } = useStore();
@@ -43,6 +43,7 @@ export function Header() {
         </Popover>
         <form className="relative mx-auto hidden max-w-md flex-1 md:block" onSubmit={(e) => { e.preventDefault(); navigate({ to: "/menu", search: { q } }); }}>
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search rice, soup, stew…" className="rounded-full pl-9" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search jollof, suya, zobo..." className="rounded-full pl-9" />
         </form>
         <div className="ml-auto flex items-center gap-1">
@@ -72,7 +73,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
         <div className="space-y-4">
           <div className="font-display text-2xl font-extrabold">Sommies <span className="text-primary">Kitchen</span></div>
-          <p className="text-sm opacity-80">Home-style Nigerian meals, cooked fresh and delivered hot.</p>
+          <p className="text-sm opacity-80">Tasty and healthy home made meals.</p>
           <div className="flex gap-3">
             {[Instagram, Facebook, Twitter].map((I, i) => (
               <a key={i} href="#" aria-label="social" className="grid size-9 place-items-center rounded-full bg-secondary-foreground/10 hover:bg-primary"><I className="size-4" /></a>
@@ -89,6 +90,12 @@ export function Footer() {
           </ul>
         </div>
         <div>
+          <h4 className="mb-2 font-bold">Delivery zones</h4>
+          <p className="text-sm opacity-80">{DELIVERY_ZONE}</p>
+        </div>
+        <div className="space-y-3">
+          <h4 className="font-bold">Contact us</h4>
+          {PHONE_CONTACTS.map(phone => <Button key={phone} asChild variant="outline" className="w-full rounded-full bg-secondary text-secondary-foreground"><a href={`tel:${phone}`}><Phone />{phone}</a></Button>)}
           <h4 className="mb-3 font-bold">Opening hours</h4>
           <ul className="space-y-1 text-sm opacity-80">
             <li>Mon - Fri: 9am - 9pm</li>

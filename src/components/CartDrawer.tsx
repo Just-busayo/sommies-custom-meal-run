@@ -27,7 +27,7 @@ export function CartDrawer() {
                   <div className="min-w-0 flex-1">
                     <div className="font-semibold">{l.title}</div>
                     <div className="truncate text-xs text-muted-foreground">
-                      {[l.protein, ...l.sides].filter(Boolean).join(", ")}{l.notes ? ` · "${l.notes}"` : ""}
+                      {[l.portion, l.protein, ...l.sides].filter(Boolean).join(", ")}{l.notes ? ` · "${l.notes}"` : ""}
                     </div>
                     <div className="mt-2 flex items-center justify-between">
                       <div className="flex items-center gap-1">
