@@ -1,0 +1,3 @@
+- [ ] Replace sample menu with confirmed portion prices and price-on-request dishes.
+- [ ] Update services, FUTO delivery, tagline and phone contacts; leave WhatsApp unconfigured.
+- [ ] Verify portion selection, cart totals, and mobile display.
