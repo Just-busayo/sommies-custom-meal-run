@@ -74,7 +74,7 @@ function Dashboard() {
                   </div>
                   <div className="text-xl font-bold text-primary">{naira(Number(o.total_amount))}</div>
                 </div>
-                <p className="mt-2 text-sm">{items.map((i) => `${i.qty}× ${i.title}`).join(", ")}</p>
+                <p className="mt-2 text-sm">{items.map((i) => `${i.qty}× ${i.title}${i.portion ? ` — ${i.portion}, ${i.protein ?? ""}` : ""}`).join("; ")}</p>
                 <div className="mt-5 grid grid-cols-4 gap-2">
                   {STEPS.map((s, i) => (
                     <div key={s.name} className="flex flex-col items-center gap-1 text-center">

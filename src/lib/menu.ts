@@ -5,6 +5,7 @@ import grill from "@/assets/grill.jpg";
 import rice from "@/assets/rice.jpg";
 import drinks from "@/assets/drinks.jpg";
 import { WHATSAPP_NUMBER, type Portion } from "./kitchen";
+import type { Json } from "@/integrations/supabase/types";
 export { WHATSAPP_NUMBER } from "./kitchen";
 
 export const DELIVERY_FEE = 1500;
@@ -29,6 +30,16 @@ export type MenuItem = {
 };
 export type Category = { id: string; name: string; icon: string | null; sort: number };
 
+export function parsePortions(value: Json): Portion[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap(option => {
+    if (!option || typeof option !== "object" || Array.isArray(option)) return [];
+    const { size, includes, price } = option;
+    if (typeof size !== "string" || typeof includes !== "string" || typeof price !== "number" || price <= 0) return [];
+    return [{ size, includes, price }];
+  });
+}
+
 export const menuQuery = queryOptions({
   queryKey: ["menu"],
   queryFn: async () => {
@@ -40,7 +51,7 @@ export const menuQuery = queryOptions({
     if (m.error) throw m.error;
     return {
       categories: c.data.filter(category => m.data?.some(item => item.category_id === category.id)) as Category[],
-      items: (m.data ?? []).map((i) => ({ ...i, price: Number(i.price), rating: Number(i.rating) })) as MenuItem[],
+      items: (m.data ?? []).map((i) => ({ ...i, price: Number(i.price), rating: Number(i.rating), portion_options: parsePortions(i.portion_options) })),
     };
   },
 });
