@@ -18,10 +18,10 @@ export type Store = {
 
 // Retain identity when Vite replaces modules while a provider is mounted.
 export const StoreContext =
-  (import.meta.hot?.data.storeContext as React.Context<Store | null> | undefined) ??
+  (import.meta.hot?.data?.storeContext as React.Context<Store | null> | undefined) ??
   createContext<Store | null>(null);
 
-if (import.meta.hot) import.meta.hot.data.storeContext = StoreContext;
+if (import.meta.hot?.data) import.meta.hot.data.storeContext = StoreContext;
 
 export function useStore() {
   const store = useContext(StoreContext);
