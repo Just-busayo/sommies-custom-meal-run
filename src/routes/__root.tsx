@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Sommies Kitchen — Fresh Nigerian Food Delivered" },
-      { name: "description", content: "Order jollof, grills, drinks and specials from Sommies Kitchen." },
+      { name: "description", content: "Tasty and healthy home made meals for FUTO and its environs." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
