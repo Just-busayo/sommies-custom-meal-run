@@ -1,23 +1,10 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { CartLine } from "./menu";
 import { DELIVERY_ZONE } from "./kitchen";
-
-type Store = {
-  lines: CartLine[];
-  add: (l: Omit<CartLine, "key">) => void;
-  setQty: (key: string, qty: number) => void;
-  clear: () => void;
-  cartOpen: boolean;
-  setCartOpen: (v: boolean) => void;
-  address: string;
-  setAddress: (a: string) => void;
-  user: User | null;
-  dark: boolean;
-  toggleDark: () => void;
-};
-const Ctx = createContext<Store | null>(null);
+import { StoreContext, type Store } from "./store-context";
+export { useStore } from "./store-context";
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
@@ -58,14 +45,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setLines((prev) => (qty <= 0 ? prev.filter((p) => p.key !== key) : prev.map((p) => (p.key === key ? { ...p, qty } : p))));
 
   return (
-    <Ctx.Provider value={{ lines, add, setQty, clear: () => setLines([]), cartOpen, setCartOpen, address, setAddress, user, dark, toggleDark: () => setDark((d) => !d) }}>
+    <StoreContext.Provider value={{ lines, add, setQty, clear: () => setLines([]), cartOpen, setCartOpen, address, setAddress, user, dark, toggleDark: () => setDark((d) => !d) }}>
       {children}
-    </Ctx.Provider>
+    </StoreContext.Provider>
   );
 }
 
-export function useStore() {
-  const c = useContext(Ctx);
-  if (!c) throw new Error("useStore outside provider");
-  return c;
-}
