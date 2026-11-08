@@ -42,9 +42,12 @@ export type Database = {
           id: string
           image_url: string | null
           is_available: boolean
+          portion_options: Json
           prep_minutes: number
           price: number
+          price_on_request: boolean
           rating: number
+          retired: boolean
           title: string
         }
         Insert: {
@@ -53,9 +56,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_available?: boolean
+          portion_options?: Json
           prep_minutes?: number
           price: number
+          price_on_request?: boolean
           rating?: number
+          retired?: boolean
           title: string
         }
         Update: {
@@ -64,9 +70,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_available?: boolean
+          portion_options?: Json
           prep_minutes?: number
           price?: number
+          price_on_request?: boolean
           rating?: number
+          retired?: boolean
           title?: string
         }
         Relationships: [
