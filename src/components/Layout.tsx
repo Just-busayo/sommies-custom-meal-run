@@ -43,7 +43,7 @@ export function Header() {
         </Popover>
         <form className="relative mx-auto hidden max-w-md flex-1 md:block" onSubmit={(e) => { e.preventDefault(); navigate({ to: "/menu", search: { q } }); }}>
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search jollof, suya, zobo…" className="rounded-full pl-9" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search jollof, suya, zobo..." className="rounded-full pl-9" />
         </form>
         <div className="ml-auto flex items-center gap-1">
           <Button variant="ghost" size="icon" className="rounded-full" onClick={toggleDark} aria-label="Toggle theme">
@@ -91,22 +91,26 @@ export function Footer() {
         <div>
           <h4 className="mb-3 font-bold">Opening hours</h4>
           <ul className="space-y-1 text-sm opacity-80">
-            <li>Mon – Fri: 9am – 9pm</li><li>Saturday: 10am – 10pm</li><li>Sunday: 12pm – 8pm</li>
+            <li>Mon - Fri: 9am - 9pm</li>
+            <li>Saturday: 10am - 10pm</li>
+            <li>Sunday: 12pm - 8pm</li>
           </ul>
           <h4 className="mb-2 mt-5 font-bold">Delivery zones</h4>
-          <p className="text-sm opacity-80">Lekki · VI · Ikoyi · Yaba · Ikeja</p>
+          <p className="text-sm opacity-80">Lekki - VI - Ikoyi - Yaba - Ikeja</p>
         </div>
         <div className="space-y-3">
           <h4 className="font-bold">Prefer to chat?</h4>
-          <p className="text-sm opacity-80">Send us your order directly and we'll confirm in minutes.</p>
+          <p className="text-sm opacity-80">Send us your order directly and we will confirm in minutes.</p>
           <Button asChild size="lg" className="w-full rounded-full bg-success text-primary-foreground hover:bg-success/90">
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Sommies Kitchen! I'd like to place an order.")}`} target="_blank" rel="noreferrer">
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Sommies%20Kitchen!%20I%27d%20like%20to%20place%20an%20order.`} target="_blank" rel="noreferrer">
               <MessageCircle />Order via WhatsApp
             </a>
           </Button>
         </div>
       </div>
-      <div className="border-t border-secondary-foreground/10 py-5 text-center text-xs opacity-70">© {new Date().getFullYear()} Sommies Kitchen</div>
+      <div className="border-t border-secondary-foreground/10 py-5 text-center text-xs opacity-70">
+        © {new Date().getFullYear()} Sommies Kitchen
+      </div>
     </footer>
   );
 }

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Sommies Kitchen" },
+      { title: "Sign in â€” Sommies Kitchen" },
       { name: "description", content: "Sign in or create an account to track your Sommies Kitchen orders." },
-      { property: "og:title", content: "Sign in — Sommies Kitchen" },
+      { property: "og:title", content: "Sign in â€” Sommies Kitchen" },
       { property: "og:description", content: "Track orders and save your delivery details." },
     ],
   }),
@@ -53,12 +53,16 @@ function AuthPage() {
           {mode === "up" && <Input placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required maxLength={80} />}
           <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
-          <Button disabled={busy} className="h-11 w-full rounded-full">{busy ? "Please wait…" : mode === "in" ? "Sign in" : "Sign up"}</Button>
+          <Button disabled={busy} className="h-11 w-full rounded-full">{busy ? "Please waitâ€¦" : mode === "in" ? "Sign in" : "Sign up"}</Button>
         </form>
-        <button onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-center text-sm text-primary">
-          {mode === "in" ? "New here? Create an account" : "Already have an account? Sign in"}
-        </button>
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <button onClick={() => setMode(mode === "in" ? "up" : "in")} className="text-sm text-primary">
+            {mode === "in" ? "New here? Create an account" : "Already have an account? Sign in"}
+          </button>
+          <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary">Staff</Link>
+        </div>
       </div>
     </div>
   );
 }
+
