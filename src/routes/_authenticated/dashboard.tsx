@@ -17,6 +17,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "description", content: "Track your Sommies Kitchen orders and manage your profile." },
       { property: "og:title", content: "My Orders — Sommies Kitchen" },
       { property: "og:description", content: "Order history, live status and profile settings." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,

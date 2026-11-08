@@ -12,6 +12,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Sign in or create an account to track your Sommies Kitchen orders." },
       { property: "og:title", content: "Sign in — Sommies Kitchen" },
       { property: "og:description", content: "Track orders and save your delivery details." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,
