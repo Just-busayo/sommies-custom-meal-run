@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+﻿import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { MapPin, Moon, Search, ShoppingBag, Sun, User, Instagram, Facebook, Twitter, MessageCircle, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ export function Logo() {
   );
 }
 
-const ZONES = ["Lekki Phase 1, Lagos", "Victoria Island, Lagos", "Ikoyi, Lagos", "Yaba, Lagos", "Ikeja GRA, Lagos"];
+const ZONES = ["20, Bananna Street, Phase 1", "Victoria Island, Opegi 22, Lagos"];
 
 export function Header() {
   const { lines, setCartOpen, address, setAddress, dark, toggleDark, user } = useStore();
