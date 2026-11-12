@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { itemImage, naira, totals, whatsappUrl } from "@/lib/menu";
+import { itemImage, naira, totals, whatsappUrl, WHATSAPP_NUMBER } from "@/lib/menu";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/checkout")({
@@ -16,6 +16,8 @@ export const Route = createFileRoute("/checkout")({
       { name: "description", content: "Review your order and pay online or check out via WhatsApp." },
       { property: "og:title", content: "Checkout — Sommies Kitchen" },
       { property: "og:description", content: "Pay by card, transfer or send your order on WhatsApp." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Checkout,
@@ -52,6 +54,7 @@ function Checkout() {
   async function viaWhatsApp() {
     if (!address.trim()) { toast.error("Add a delivery address"); return; }
     const url = whatsappUrl(lines, address, name || undefined);
+    if (!url) { toast.error("WhatsApp ordering is awaiting confirmation. Please call the kitchen."); return; }
     window.open(url, "_blank");
     if (user && (await save("WhatsApp"))) { clear(); toast.success("Order sent! Track it in your dashboard."); }
   }
@@ -90,9 +93,10 @@ function Checkout() {
           <p className="text-xs text-muted-foreground">Payment preview — no real charge is made.</p>
           <Button disabled={busy} className="h-12 w-full rounded-full text-base" onClick={payOnline}>{busy ? "Processing…" : `Pay ${naira(t.total)}`}</Button>
           <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="bg-card px-2">or</span></div>
-          <Button variant="outline" className="h-12 w-full rounded-full border-success text-base text-success hover:bg-success/10" onClick={viaWhatsApp}>
+          <Button disabled={!WHATSAPP_NUMBER} variant="outline" className="h-12 w-full rounded-full border-success text-base text-success hover:bg-success/10" onClick={viaWhatsApp}>
             <MessageCircle />Order & Checkout via WhatsApp
           </Button>
+          {!WHATSAPP_NUMBER && <p className="text-xs text-muted-foreground">WhatsApp ordering awaiting confirmation.</p>}
         </section>
       </div>
       <aside className="h-fit space-y-4 rounded-3xl border bg-card p-6 lg:sticky lg:top-24">
@@ -100,7 +104,7 @@ function Checkout() {
         {lines.map((l) => (
           <div key={l.key} className="flex gap-3 text-sm">
             <img src={itemImage(l.image)} alt="" className="size-12 rounded-xl object-cover" />
-            <div className="flex-1"><div className="font-semibold">{l.qty}× {l.title}</div><div className="text-xs text-muted-foreground">{[l.protein, ...l.sides].filter(Boolean).join(", ")}</div></div>
+            <div className="flex-1"><div className="font-semibold">{l.qty}× {l.title}</div><div className="text-xs text-muted-foreground">{[l.portion, l.protein, ...l.sides].filter(Boolean).join(", ")}</div></div>
             <div className="font-semibold">{naira(l.unitPrice * l.qty)}</div>
           </div>
         ))}

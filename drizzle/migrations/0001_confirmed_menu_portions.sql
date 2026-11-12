@@ -1,0 +1,3 @@
+ALTER TABLE public.menu_items ADD COLUMN portion_options jsonb NOT NULL DEFAULT '[]'::jsonb, ADD COLUMN price_on_request boolean NOT NULL DEFAULT false, ADD COLUMN retired boolean NOT NULL DEFAULT false;
+COMMENT ON COLUMN public.menu_items.portion_options IS 'Confirmed portion sizes, included proteins and exact Naira prices from the kitchen price list.';
+COMMENT ON COLUMN public.menu_items.price_on_request IS 'When true, numeric base price is not a quote and must never be used for checkout.';
