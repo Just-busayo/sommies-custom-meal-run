@@ -1,11 +1,13 @@
-﻿import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { MapPin, Moon, Search, ShoppingBag, Sun, User, Instagram, Facebook, Twitter, Phone, ChefHat } from "lucide-react";
+import { MapPin, Moon, Search, ShoppingBag, Sun, User, Instagram, Facebook, Twitter, Phone, ChefHat, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useStore } from "@/lib/store";
-import { DELIVERY_ZONE, PHONE_CONTACTS } from "@/lib/kitchen";
+import { DELIVERY_ZONE, PHONE_CONTACTS, WHATSAPP_NUMBER } from "@/lib/kitchen";
+
+const ZONES = [DELIVERY_ZONE];
 
 export function Logo() {
   return (
@@ -15,12 +17,6 @@ export function Logo() {
     </Link>
   );
 }
-
-<<<<<<< HEAD
-const ZONES = ["20, Bananna Street, Phase 1", "Victoria Island, Opegi 22, Lagos"];
-=======
-const ZONES = [DELIVERY_ZONE];
->>>>>>> 0d7343568640bf226a59f5e1891bce9d5169ffec
 
 export function Header() {
   const { lines, setCartOpen, address, setAddress, dark, toggleDark, user } = useStore();
@@ -47,7 +43,6 @@ export function Header() {
         </Popover>
         <form className="relative mx-auto hidden max-w-md flex-1 md:block" onSubmit={(e) => { e.preventDefault(); navigate({ to: "/menu", search: { q } }); }}>
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search rice, soup, stew…" className="rounded-full pl-9" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search jollof, suya, zobo..." className="rounded-full pl-9" />
         </form>
         <div className="ml-auto flex items-center gap-1">
@@ -106,17 +101,13 @@ export function Footer() {
             <li>Saturday: 10am - 10pm</li>
             <li>Sunday: 12pm - 8pm</li>
           </ul>
-          <h4 className="mb-2 mt-5 font-bold">Delivery zones</h4>
-          <p className="text-sm opacity-80">Lekki - VI - Ikoyi - Yaba - Ikeja</p>
-        </div>
-        <div className="space-y-3">
-          <h4 className="font-bold">Prefer to chat?</h4>
-          <p className="text-sm opacity-80">Send us your order directly and we will confirm in minutes.</p>
-          <Button asChild size="lg" className="w-full rounded-full bg-success text-primary-foreground hover:bg-success/90">
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Sommies%20Kitchen!%20I%27d%20like%20to%20place%20an%20order.`} target="_blank" rel="noreferrer">
-              <MessageCircle />Order via WhatsApp
-            </a>
-          </Button>
+          {WHATSAPP_NUMBER && (
+            <Button asChild size="lg" className="w-full rounded-full bg-success text-primary-foreground hover:bg-success/90">
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Sommies%20Kitchen!%20I%27d%20like%20to%20place%20an%20order.`} target="_blank" rel="noreferrer">
+                <MessageCircle />Order via WhatsApp
+              </a>
+            </Button>
+          )}
         </div>
       </div>
       <div className="border-t border-secondary-foreground/10 py-5 text-center text-xs opacity-70">

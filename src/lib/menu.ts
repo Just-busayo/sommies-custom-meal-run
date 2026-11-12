@@ -7,9 +7,6 @@ import drinks from "@/assets/drinks.jpg";
 import { WHATSAPP_NUMBER, type Portion } from "./kitchen";
 import type { Json } from "@/integrations/supabase/types";
 export { WHATSAPP_NUMBER } from "./kitchen";
-
-// Replace with the kitchen's real WhatsApp number (international format, digits only).
-export const WHATSAPP_NUMBER = "2347086883952";
 export const DELIVERY_FEE = 1500;
 export const TAX_RATE = 0.075;
 

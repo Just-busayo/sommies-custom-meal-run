@@ -1,6 +1,6 @@
 export const DELIVERY_ZONE = "FUTO and its environs";
 export const PHONE_CONTACTS = ["07086883952", "07072465126"] as const;
-export const WHATSAPP_NUMBER: string | null = null;
+export const WHATSAPP_NUMBER = "2347086883952";
 
 export type Portion = { size: string; includes: string; price: number };
 export const RICE_PORTIONS: Portion[] = [
